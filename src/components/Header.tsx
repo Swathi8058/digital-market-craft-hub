@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { ShoppingCart, Search, Menu, User } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '@/contexts/CartContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -12,6 +13,9 @@ interface HeaderProps {
 const Header = ({ onCartClick }: HeaderProps) => {
   const { getTotalItems } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <header className="bg-white shadow-sm border-b sticky top-0 z-50">
@@ -19,17 +23,55 @@ const Header = ({ onCartClick }: HeaderProps) => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              StyleHub
-            </h1>
+            <Link to="/">
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                StyleHub
+              </h1>
+            </Link>
           </div>
 
           {/* Navigation - Hidden on mobile */}
           <nav className="hidden md:flex space-x-8">
-            <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors">Home</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors">Products</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors">Categories</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors">About</a>
+            <Link 
+              to="/" 
+              className={`transition-colors ${
+                isActive('/') 
+                  ? 'text-blue-600 font-semibold' 
+                  : 'text-gray-700 hover:text-blue-600'
+              }`}
+            >
+              Home
+            </Link>
+            <Link 
+              to="/products" 
+              className={`transition-colors ${
+                isActive('/products') 
+                  ? 'text-blue-600 font-semibold' 
+                  : 'text-gray-700 hover:text-blue-600'
+              }`}
+            >
+              Products
+            </Link>
+            <Link 
+              to="/categories" 
+              className={`transition-colors ${
+                isActive('/categories') 
+                  ? 'text-blue-600 font-semibold' 
+                  : 'text-gray-700 hover:text-blue-600'
+              }`}
+            >
+              Categories
+            </Link>
+            <Link 
+              to="/about" 
+              className={`transition-colors ${
+                isActive('/about') 
+                  ? 'text-blue-600 font-semibold' 
+                  : 'text-gray-700 hover:text-blue-600'
+              }`}
+            >
+              About
+            </Link>
           </nav>
 
           {/* Right side actions */}
@@ -78,10 +120,50 @@ const Header = ({ onCartClick }: HeaderProps) => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t">
             <nav className="flex flex-col space-y-2">
-              <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors py-2">Home</a>
-              <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors py-2">Products</a>
-              <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors py-2">Categories</a>
-              <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors py-2">About</a>
+              <Link 
+                to="/" 
+                className={`transition-colors py-2 ${
+                  isActive('/') 
+                    ? 'text-blue-600 font-semibold' 
+                    : 'text-gray-700 hover:text-blue-600'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Home
+              </Link>
+              <Link 
+                to="/products" 
+                className={`transition-colors py-2 ${
+                  isActive('/products') 
+                    ? 'text-blue-600 font-semibold' 
+                    : 'text-gray-700 hover:text-blue-600'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Products
+              </Link>
+              <Link 
+                to="/categories" 
+                className={`transition-colors py-2 ${
+                  isActive('/categories') 
+                    ? 'text-blue-600 font-semibold' 
+                    : 'text-gray-700 hover:text-blue-600'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Categories
+              </Link>
+              <Link 
+                to="/about" 
+                className={`transition-colors py-2 ${
+                  isActive('/about') 
+                    ? 'text-blue-600 font-semibold' 
+                    : 'text-gray-700 hover:text-blue-600'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                About
+              </Link>
             </nav>
           </div>
         )}
