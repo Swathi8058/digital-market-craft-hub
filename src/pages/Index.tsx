@@ -1,13 +1,50 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useState } from 'react';
+import { CartProvider } from '@/contexts/CartContext';
+import Header from '@/components/Header';
+import HeroSection from '@/components/HeroSection';
+import ProductGrid from '@/components/ProductGrid';
+import Cart from '@/components/Cart';
+import ProductModal from '@/components/ProductModal';
+import Footer from '@/components/Footer';
+import { sampleProducts } from '@/data/products';
+import { Product } from '@/types/product';
 
 const Index = () => {
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  const handleProductClick = (product: Product) => {
+    setSelectedProduct(product);
+  };
+
+  const closeProductModal = () => {
+    setSelectedProduct(null);
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <CartProvider>
+      <div className="min-h-screen bg-white">
+        <Header onCartClick={() => setIsCartOpen(true)} />
+        <HeroSection />
+        <ProductGrid 
+          products={sampleProducts} 
+          onProductClick={handleProductClick}
+        />
+        <Footer />
+        
+        <Cart 
+          isOpen={isCartOpen} 
+          onClose={() => setIsCartOpen(false)} 
+        />
+        
+        <ProductModal
+          product={selectedProduct}
+          isOpen={!!selectedProduct}
+          onClose={closeProductModal}
+        />
       </div>
-    </div>
+    </CartProvider>
   );
 };
 
